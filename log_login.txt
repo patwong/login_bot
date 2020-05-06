@@ -37,4 +37,9 @@ https://www.hongkiat.com/blog/automate-create-login-bot-python-selenium/
 	
 	organizing yamjam config file:
 	https://yamjam.readthedocs.io/en/v0.1.7/organizing-your-config.html
-
+- added extension functionality; install_addon() accepts windows directory format rather than linux/cygwin
+	https://github.com/mozilla/geckodriver/issues/1632
+	https://stackoverflow.com/questions/58354160/python-selenium-4-firefox-installaddon-not-working
+	
+	general install_addon() use:
+	https://datarebellion.com/blog/using-firefox-extensions-with-selenium-in-python/

@@ -1,0 +1,40 @@
+2020.05.05
+main tutorial notes:
+https://www.hongkiat.com/blog/automate-create-login-bot-python-selenium/
+- installed selenium via pip
+- downloaded geckodriver, put into d/software/py_libs/, and added to cygwin path
+	geckodriver location
+	https://github.com/mozilla/geckodriver/releases
+	
+	adding dirs to path; add a line to end of bashrc for permanent addition, or to shell for temporary use
+	eg export $ATH=$PATH:/.....
+	https://www.techrepublic.com/article/how-to-add-directories-to-your-path-in-linux/
+	https://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path
+- created firefox profile just for selenium
+	using browser profiles for selenium
+	self.driver = webdriver.Firefox(firefoxProfile)
+	self.driver = webdriver.Firefox(firefox_profile=firefoxProfile)
+
+	https://stackoverflow.com/questions/7477959/selenium-how-to-start-firefox-with-addons
+
+	creating firefox profile
+		about:profile
+		created new profile: selenium_ff
+	https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data
+	https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
+
+	using browser profiles for selenium
+	https://stackoverflow.com/questions/7477959/selenium-how-to-start-firefox-with-addons
+	=> need to load in firefox profile, soln found below:
+	https://stackoverflow.com/questions/37247336/selenium-use-of-firefox-profile
+- used implicit wait after logout
+	https://selenium-python.readthedocs.io/waits.html
+- added yamjam to obfuscate urls, usernames, passwords, webpage ids
+	pip install yamjam
+	mkdir ~/.yamjam
+	touch ~/.yamjam/config.yaml
+	chmod -R go-rwx ~/.yamjam
+	
+	organizing yamjam config file:
+	https://yamjam.readthedocs.io/en/v0.1.7/organizing-your-config.html
+

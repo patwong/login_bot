@@ -1,6 +1,7 @@
 # simple login bot using firefox
 # requires login, confirmation webpage, and logout url stored in yamjam
 
+from datetime import datetime
 from YamJam import yamjam
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -57,8 +58,12 @@ for user in username_list:
             EC.presence_of_element_located((By.ID, login_check2)))
 
     # logout and wait
+    browser.implicitly_wait(20)
     browser.get(logout_url)
     browser.implicitly_wait(20)
+    current_datetime = datetime.isoformat(datetime.now())
+    current_datetime = '[' + current_datetime[:10] + ' ' + current_datetime[11:19] + ']'
+    print(current_datetime,'user logged in/out:', user)
 # end loop
 browser.quit()
 

@@ -40,30 +40,34 @@ else:
 
 # login loop
 for user in username_list:
-    browser.get((login_url))
-    username = WebDriverWait(browser, 10).until(
-            EC.presence_of_element_located((By.ID, login_user_element)))
-    username.send_keys(user)
-    password = browser.find_element_by_id(login_pw_element)
-    password.send_keys(master_password)
-    login_button = browser.find_element_by_id(login_button_element)
-    login_button.click()
+    try:
+        browser.get((login_url))
+        username = WebDriverWait(browser, 10).until(
+                EC.presence_of_element_located((By.ID, login_user_element)))
+        username.send_keys(user)
+        password = browser.find_element_by_id(login_pw_element)
+        password.send_keys(master_password)
+        login_button = browser.find_element_by_id(login_button_element)
+        login_button.click()
 
-    # confirming user has logged in
-    element_locate = WebDriverWait(browser, 10).until(
-            EC.presence_of_element_located((By.ID, login_check1)))
-    # visiting a webpage after logging in and confirming an element exists
-    browser.get(logged_in_page)
-    element_locate = WebDriverWait(browser, 10).until(
-            EC.presence_of_element_located((By.ID, login_check2)))
+        # confirming user has logged in
+        element_locate = WebDriverWait(browser, 10).until(
+                EC.presence_of_element_located((By.ID, login_check1)))
+        # visiting a webpage after logging in and confirming an element exists
+        browser.get(logged_in_page)
+        element_locate = WebDriverWait(browser, 10).until(
+                EC.presence_of_element_located((By.ID, login_check2)))
 
-    # logout and wait
-    browser.implicitly_wait(20)
-    browser.get(logout_url)
-    browser.implicitly_wait(20)
-    current_datetime = datetime.isoformat(datetime.now())
-    current_datetime = '[' + current_datetime[:10] + ' ' + current_datetime[11:19] + ']'
-    print(current_datetime,'user logged in/out:', user)
+        # logout and wait
+        browser.implicitly_wait(20)
+        browser.get(logout_url)
+        browser.implicitly_wait(20)
+        current_datetime = datetime.isoformat(datetime.now())
+        current_datetime = '[' + current_datetime[:10] + ' ' + current_datetime[11:19] + ']'
+        print(current_datetime,'user logged in/out:', user)
+    except:
+        import sys
+        sys.exit('something went wrong')
 # end loop
 browser.quit()
 

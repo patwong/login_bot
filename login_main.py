@@ -22,6 +22,8 @@ logged_in_page = user_info['logged_in_page']
 login_check1 = user_info['confirm_element1']
 login_check2 = user_info['confirm_element2']
 logout_url = user_info['logout_url']
+output_string = ""
+output_temp = ""
 
 # browser driver
 browser = webdriver.Firefox(firefox_profile)
@@ -62,12 +64,21 @@ for user in username_list:
         browser.implicitly_wait(20)
         browser.get(logout_url)
         browser.implicitly_wait(20)
-        current_datetime = datetime.isoformat(datetime.now())
-        current_datetime = '[' + current_datetime[:10] + ' ' + current_datetime[11:19] + ']'
-        print(current_datetime,'user logged in/out:', user)
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        current_datetime = '[' + current_datetime + ']'
+        output_temp = current_datetime + " user logged in/out: " + user
+        print(output_temp)
+        output_string += output_temp + '\n'
     except:
         import sys
         sys.exit('something went wrong')
 # end loop
 browser.quit()
+
+# write out to log
+# log's filename created to not interfere with cmd tab autocomplete and
+# to differentiate with update log
+with open('bot_log.log', 'a') as output_file:
+    output_file.write(output_string)
+# end with
 

@@ -1,3 +1,9 @@
+2020.11.18
+- added longer waits in between logging in, visiting webpage, logging out
+- added try/except block to main loop in case of error and exit out
+- shortened datetime output string using strftime(); removed string slicing
+- added logging function to record the stdout message
+
 2020.07.30
 - added date+timestamp to sysout message confirming successful login/out
 - added wait between confirming login and getting logout URL

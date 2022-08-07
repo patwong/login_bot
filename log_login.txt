@@ -1,6 +1,12 @@
+to fix:
+if mouse wanders into Selenium browser, may break script because of interference with context/hover menu
+
 2022.08.07
 increased webDriverWait: username 10->15, element_locate(1,2): 10->20
 updated username_list and password_list to use dict instead of lists
+added hover menu functionality
+- can log out account via website's "log out" option in hoverable menu
+fix: interference with context/hover menu
 
 2020.11.18
 - added longer waits in between logging in, visiting webpage, logging out

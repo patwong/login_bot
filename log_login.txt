@@ -1,3 +1,7 @@
+2022.08.07
+increased webDriverWait: username 10->15, element_locate(1,2): 10->20
+updated username_list and password_list to use dict instead of lists
+
 2020.11.18
 - added longer waits in between logging in, visiting webpage, logging out
 - added try/except block to main loop in case of error and exit out

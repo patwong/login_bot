@@ -13,7 +13,8 @@ ff_profile_location = user_info['ff_profile']
 firefox_profile = webdriver.FirefoxProfile(ff_profile_location)
 ff_extensions = user_info['extensions']
 username_list = user_info['username_list']
-master_password = user_info['password']
+# master_password = user_info['password']
+password_list = user_info['password']
 login_url = user_info['login_url']
 login_user_element = user_info['login_user_element']
 login_pw_element = user_info['login_pw_element']
@@ -44,20 +45,20 @@ else:
 for user in username_list:
     try:
         browser.get((login_url))
-        username = WebDriverWait(browser, 10).until(
+        username = WebDriverWait(browser, 15).until(
                 EC.presence_of_element_located((By.ID, login_user_element)))
         username.send_keys(user)
         password = browser.find_element_by_id(login_pw_element)
-        password.send_keys(master_password)
+        password.send_keys(password_list[username_list[user]])
         login_button = browser.find_element_by_id(login_button_element)
         login_button.click()
 
         # confirming user has logged in
-        element_locate = WebDriverWait(browser, 10).until(
+        element_locate = WebDriverWait(browser, 20).until(
                 EC.presence_of_element_located((By.ID, login_check1)))
         # visiting a webpage after logging in and confirming an element exists
         browser.get(logged_in_page)
-        element_locate = WebDriverWait(browser, 10).until(
+        element_locate = WebDriverWait(browser, 20).until(
                 EC.presence_of_element_located((By.ID, login_check2)))
 
         # logout and wait

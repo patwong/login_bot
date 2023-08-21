@@ -1,6 +1,7 @@
 # simple login bot using firefox
 # requires login, confirmation webpage, and logout url stored in yamjam
 
+import sys
 from datetime import datetime
 from YamJam import yamjam
 from selenium import webdriver
@@ -14,6 +15,7 @@ ff_profile_location = user_info['ff_profile']
 firefox_profile = webdriver.FirefoxProfile(ff_profile_location)
 ff_extensions = user_info['extensions']
 username_list = user_info['username_list']
+old_ul = {}
 password_list = user_info['password']
 login_url = user_info['login_url']
 login_menu = user_info['login_menu']
@@ -25,6 +27,11 @@ login_check1 = user_info['confirm_element1']
 login_check2 = user_info['confirm_element2']
 logout_button = user_info['logout_button']
 hover_menu_id = user_info['hover_menu']
+
+arg_len = len(sys.argv)
+if arg_len > 1:
+    old_ul = username_list
+    username_list = sys.argv[1:]
 
 output_string = ""
 output_temp = ""
@@ -47,24 +54,33 @@ else:
 # login loop
 for user in username_list:
     # try:
+    if old_ul:
+        # if manually given usernames
+        if not(user in old_ul):
+            print("not in username list", user)
+            continue
     browser.get((login_url))
     xpath_create = '//a[contains(@href,'+ '"'+ login_menu + '"' + ')]'
+    browser.implicitly_wait(20)
     login_button = browser.find_element_by_xpath(xpath_create)
     login_button.click()
-    username = WebDriverWait(browser, 15).until(
+    username = WebDriverWait(browser, 30).until(
             EC.presence_of_element_located((By.ID, login_user_element)))
     username.send_keys(user)
     password = browser.find_element_by_id(login_pw_element)
-    password.send_keys(password_list[username_list[user]])
+    if arg_len > 1:
+        password.send_keys(password_list[old_ul[user]])
+    else:
+        password.send_keys(password_list[username_list[user]])
     login_button = browser.find_element_by_id(login_button_element)
     login_button.click()
 
     # confirming user has logged in
-    element_locate = WebDriverWait(browser, 20).until(
+    element_locate = WebDriverWait(browser, 30).until(
             EC.presence_of_element_located((By.ID, login_check1)))
     # visiting a webpage after logging in and confirming an element exists
     browser.get(logged_in_page)
-    element_locate = WebDriverWait(browser, 20).until(
+    element_locate = WebDriverWait(browser, 30).until(
             EC.presence_of_element_located((By.ID, login_check2)))
 
     # logout and wait
@@ -76,7 +92,7 @@ for user in username_list:
     logout_now = browser.find_element(By.XPATH,xpath_create)
     logout_now.click()
     browser.implicitly_wait(20)
-    
+
     # adding timestamp and username to log upon successful login/logout
     current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     current_datetime = '[' + current_datetime + ']'
@@ -89,7 +105,11 @@ for user in username_list:
 # end loop
 browser.quit()
 
-# write out to log
+# quit if arguments given
+if arg_len > 1:
+    sys.exit('test done')
+
+# write out to log only if no arguments given
 # log's filename created to not interfere with cmd tab autocomplete and
 # to differentiate with update log
 with open('bot_log.log', 'a') as output_file:

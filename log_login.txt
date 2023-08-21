@@ -1,6 +1,13 @@
 to fix:
 if mouse wanders into Selenium browser, may break script because of interference with context/hover menu
 
+2023.08.21
+added command line username input function
+- uses passwords in yamjam file
+- manual option will not write to log file
+increased username wait web_driver 15->30
+increased element_locate wait 20->30
+
 2022.08.07
 increased webDriverWait: username 10->15, element_locate(1,2): 10->20
 updated username_list and password_list to use dict instead of lists

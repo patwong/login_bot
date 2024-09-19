@@ -1,6 +1,5 @@
 # simple login bot using firefox
 # requires login, confirmation webpage, and logout url stored in yamjam
-
 import sys
 from datetime import datetime
 from YamJam import yamjam
@@ -9,10 +8,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 
+options = Options()
 user_info = yamjam()['login_bot']
 ff_profile_location = user_info['ff_profile']
-firefox_profile = webdriver.FirefoxProfile(ff_profile_location)
+options.binary_location = user_info['binary_location']
+options.profile = webdriver.FirefoxProfile(ff_profile_location)
 ff_extensions = user_info['extensions']
 username_list = user_info['username_list']
 old_ul = {}
@@ -37,18 +40,18 @@ output_string = ""
 output_temp = ""
 
 # browser driver
-browser = webdriver.Firefox(firefox_profile)
+browser = webdriver.Firefox(options=options)
 
 # check if extension is singular string or a list
-if type(ff_extensions) is list:
-    for extension in ff_extensions:
-        browser.install_addon(extension, temporary=True)
+# if type(ff_extensions) is list:
+#    for extension in ff_extensions:
+#        browser.install_addon(extension, temporary=True)
     # loop
-elif type(ff_extensions) is str:
-    browser.install_addon(ff_extensions, temporary=True)
-else:
-    import sys
-    sys.exit('bad extension')
+# elif type(ff_extensions) is str:
+#    browser.install_addon(ff_extensions, temporary=True)
+# else:
+#    import sys
+#    sys.exit('bad extension')
 # end
 
 # login loop
@@ -61,6 +64,7 @@ for user in username_list:
             continue
     browser.get((login_url))
     xpath_create = '//a[contains(@href,'+ '"'+ login_menu + '"' + ')]'
+    login_xpath1 = xpath_create
     browser.implicitly_wait(20)
     login_button = browser.find_element_by_xpath(xpath_create)
     login_button.click()
@@ -91,7 +95,10 @@ for user in username_list:
     hover_menu.move_to_element(hover_find).perform()
     logout_now = browser.find_element(By.XPATH,xpath_create)
     logout_now.click()
-    browser.implicitly_wait(20)
+    WebDriverWait(browser, 30).until(
+        EC.presence_of_element_located((By.XPATH, login_xpath1))
+    )
+    # browser.implicitly_wait(20)
 
     # adding timestamp and username to log upon successful login/logout
     current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

@@ -1,6 +1,20 @@
 to fix:
 if mouse wanders into Selenium browser, may break script because of interference with context/hover menu
 
+2024.09.19
+using Options() for selenium webdriver settings
+- selenium raises exception if firefox binary location not set in Options()
+- firefox profile ('selenium') also set in Options()
+- login bot previously worked without linking a firefox binary and webdriver accepted a firefox profile location as an argument
+
+2024.01.02
+waiting to login next account after previous
+- added login_xpath1 to remember xpath for login box
+- original xpath_create for login_menu is overwritten
+- needed to confirm login_menu existence after logout
+    - sometimes error because account was not logged out prior to next, despite implicitly_wait(20)
+    => EC.presence_of_element_located(By.XPATH, login_xpath1)
+
 2023.08.21
 added command line username input function
 - uses passwords in yamjam file
